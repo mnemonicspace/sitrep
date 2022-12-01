@@ -1,12 +1,24 @@
 # Base class
 class Device:
-    def __init__(self, ip, platform, user, key):
+    def __init__(self, name, ip, platform, user, key):
 
         # Run setters to initialize values
+        self.name = name
         self.ip = ip
         self.platform = platform
         self.user = user
         self.key = key
+
+        @property
+        def name(self):
+            return self._name
+
+        @name.setter
+        def name(self, name):
+            if not name:
+                raise ValueError("No Name Provided")
+
+            self._name = name
 
         # IP of device
         @property
@@ -68,5 +80,5 @@ class Device:
 
 
 # Function to initialize new Device objects
-def create(ip, platform, user, key="~./ssh/test"):
-    return Device(ip, platform, key, user)
+def create(name, ip, platform, user, key="/Users/msexton/.ssh/ansible"):
+    return Device(name, ip, platform, user, key)
