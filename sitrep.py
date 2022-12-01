@@ -5,11 +5,12 @@ import netmiko
 def main():
 
     # create devices
-    vpn_dc1 = devices.create(
-        "10.1.14.131", "paloalto_panos", "~/.ssh/test", "admin")
-
+    dev_list = {
+        "vpn_dc1": devices.create("10.1.14.131", "paloalto_panos", "admin"),
+        "dc1_6807": devices.create("10.1.14.52", "cisco_ios", "admin")
+    }
     # run test function on device
-    get_info(vpn_dc1)
+    [get_info(dev) for dev in dev_list.values()]
 
 
 # Function to Get System Info
