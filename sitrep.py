@@ -6,8 +6,7 @@ def main():
 
     # create devices
     dev_list = {
-        "vpn_dc1": devices.create("vpn_dc1", "10.10.20.78", "linux", "ansible"),
-        "dc1_6807": devices.create("dc1_6807", "10.10.10.53", "linux", "ansible")
+        "vpn_dc1": devices.create("vpn_dc1", "10.1.14.131", "paloalto_panos", "nseautodev", "/home/MS0592/.ssh/nseoutodev"),
     }
     # run test function on device
     [get_info(dev) for dev in dev_list.values()]
@@ -20,7 +19,7 @@ def get_info(device):
 
     # Netmiko run command
     with netmiko.ConnectHandler(**working_dev) as net_connect:
-        output = net_connect.send_command("uptime")
+        output = net_connect.send_command("show system info")
 
     print(f"\n{device.name}: {output}\n")
 
