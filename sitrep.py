@@ -9,12 +9,11 @@ def main():
 
     # create devices
     dev_list = {
-        "vpn_dc1": devices.create("vpn_dc1", "10.1.14.131", "paloalto_panos", "nseautodev", "/home/MS0592/.ssh/nseoutodev"),
+        "vpn_dc1": devices.create("vpn_dc1", "10.10.20.78", "linux", "ansible"),
     }
 
-    data = {}
-    # run test function on device
-    [data.append(f"{dev.name}":get_info(dev)) for dev in dev_list.values()]
+    # run function on devices and create dict of responses
+    data = {dev.name: get_info(dev) for dev in dev_list.values()}
 
     print(data)
 
@@ -27,9 +26,8 @@ def get_info(device):
 
     # Netmiko run command
     with netmiko.ConnectHandler(**working_dev) as net_connect:
-        return net_connect.send_command("show system info")
+        return net_connect.send_command("uptime")
 
-    print(f"\n{output}\n")
 
 # def send_mail(report):
 #     SERVER = "localhost"
