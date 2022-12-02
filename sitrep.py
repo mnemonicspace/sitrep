@@ -1,5 +1,4 @@
 import devices
-import netmiko
 import smtplib
 from datetime import date
 import csv
