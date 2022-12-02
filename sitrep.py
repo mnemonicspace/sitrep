@@ -13,20 +13,25 @@ def main():
     }
 
     # run function on devices and create dict of responses
-    data = {dev.name: get_info(dev) for dev in dev_list.values()}
+    data = {dev.name: get_uptime(dev) for dev in dev_list.values()}
 
     print(data)
 
-# Function to Get System Info
 
+# Function to Get uptime
+def get_uptime(device):
+    command = "uptime"
 
-def get_info(device):
     # create netmiko object with device attrib
-    working_dev = device.build()
+    return send_cmd(device.build(), command)
+
+
+# Function to send command to device
+def send_cmd(device, cmd):
 
     # Netmiko run command
-    with netmiko.ConnectHandler(**working_dev) as net_connect:
-        return net_connect.send_command("uptime")
+    with netmiko.ConnectHandler(**device) as net_connect:
+        return net_connect.send_command(cmd)
 
 
 # def send_mail(report):
