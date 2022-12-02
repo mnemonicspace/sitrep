@@ -12,26 +12,19 @@ def main():
         "vpn_dc1": devices.create("vpn_dc1", "10.10.20.78", "linux", "ansible"),
     }
 
-    # run function on devices and create dict of responses
-    data = {dev.name: get_uptime(dev) for dev in dev_list.values()}
+    # run uptime on devices and create dict of responses
+    command = "uptime"
+    data = {dev.name: dev.send_cmd(command) for dev in dev_list.values()}
 
     print(data)
 
 
 # Function to Get uptime
-def get_uptime(device):
-    command = "uptime"
-
-    # create netmiko object with device attrib
-    return send_cmd(device.build(), command)
-
-
-# Function to send command to device
-def send_cmd(device, cmd):
-
-    # Netmiko run command
-    with netmiko.ConnectHandler(**device) as net_connect:
-        return net_connect.send_command(cmd)
+# def get_uptime(device):
+#
+#     # create netmiko object with device attrib
+#     return send_cmd(device.build(), command)
+#
 
 
 # def send_mail(report):

@@ -1,4 +1,8 @@
+import netmiko
+
 # Base class
+
+
 class Device:
     def __init__(self, name, ip, platform, user, key):
 
@@ -77,6 +81,14 @@ class Device:
             "use_keys": True,
             "key_file": self.key,
         }
+
+    # Function to send command to device
+
+    def send_cmd(self, cmd):
+
+        # Netmiko run command
+        with netmiko.ConnectHandler(**self.build()) as net_connect:
+            return net_connect.send_command(cmd)
 
 
 # Function to initialize new Device objects
