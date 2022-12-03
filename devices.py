@@ -1,4 +1,5 @@
 import netmiko
+import re
 
 # Base class
 
@@ -12,6 +13,8 @@ class Device:
         self.platform = platform
         self.user = user
         self.key = key
+
+        platforms = ["paloalto_panos", "cisco_ios"]
 
         @property
         def name(self):
@@ -31,10 +34,12 @@ class Device:
 
         @ip.setter
         def ip(self, ip):
-            if not ip:
+            valid = re.findall(
+                r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ip)
+            if len(valid) != 1:
                 raise ValueError("No IP Provided")
-
-            self._ip = ip
+            else:
+                self._ip = len(valid)
 
         # Maunufacturer Platform
         @property
@@ -43,8 +48,8 @@ class Device:
 
         @platform.setter
         def platform(self, platform):
-            if not platform:
-                raise ValueError("No Platform Provided")
+            if platform not in platforms:
+                raise ValueError("Invalid Platform Provided")
 
             self._platform = platform
 

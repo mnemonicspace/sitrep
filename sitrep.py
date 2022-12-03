@@ -7,13 +7,13 @@ import csv
 def main():
 
     # create devices
-    dev_list = {
-        "vpn_dc1": devices.create("vpn_dc1", "10.10.20.78", "linux", "ansible"),
+    palo_list = {
+        "vpn_dc1": devices.create("homebridge", "300.10.20.78", "linux", "ansible"),
     }
 
     # run uptime on devices and create dict of responses
     command = "uptime"
-    data = {dev.name: dev.send_cmd(command) for dev in dev_list.values()}
+    data = {dev.name: dev.send_cmd(command) for dev in palo_list.values()}
 
     print(data)
 
