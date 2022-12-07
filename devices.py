@@ -1,5 +1,6 @@
-import netmiko
+#import netmiko
 import re
+from os.path import exixts
 
 # Base class
 
@@ -14,68 +15,73 @@ class Device:
         self.user = user
         self.key = key
 
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        if not name or not isinstance(name, str):
+            raise ValueError("Invalid Name Provided")
+
+        self._name = name
+
+    # IP of device
+    @property
+    def ip(self):
+        return self._ip
+
+    @ip.setter
+    def ip(self, ip):
+	if not isinstance(ip, str):
+	    raise ValueError("Invalid IP Provided")
+
+        valid = re.findall(
+            r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ip)
+        if len(valid) != 1:
+            raise ValueError("Invalid IP Provided")
+        else:
+            self._ip = ip
+
+    # Maunufacturer Platform
+    @property
+    def platform(self):
+        return self._platform
+
+    @platform.setter
+    def platform(self, platform):
+       
         platforms = ["paloalto_panos", "cisco_ios"]
+       
+        if platform not in platforms or not isinstance(platform, str):
+            raise ValueError("Invalid Platform Provided")
 
-        @property
-        def name(self):
-            return self._name
+        self._platform = platform
 
-        @name.setter
-        def name(self, name):
-            if not name:
-                raise ValueError("No Name Provided")
+    # SSH Keyfile location
+    @property
+    def key(self):
+        return self._key
 
-            self._name = name
+    @key.setter
+    def key(self, key):
+        if not key or not isinstance(key, str) or not exists(key):
+            raise ValueError("Invalid Key File")
 
-        # IP of device
-        @property
-        def ip(self):
-            return self._ip
+        self._key = key
 
-        @ip.setter
-        def ip(self, ip):
-            valid = re.findall(
-                r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ip)
-            if len(valid) != 1:
-                raise ValueError("No IP Provided")
-            else:
-                self._ip = len(valid)
+    # User account to use for device connections
+    @property
+    def user(self):
+        return self._user
 
-        # Maunufacturer Platform
-        @property
-        def platform(self):
-            return self._platform
+    @user.setter
+    def user(self, user):
+        if not user or not isinstance(user, str):
+            raise ValueError("Invalid User Provided")
 
-        @platform.setter
-        def platform(self, platform):
-            if platform not in platforms:
-                raise ValueError("Invalid Platform Provided")
-
-            self._platform = platform
-
-        # SSH Keyfile location
-        @property
-        def key(self):
-            return self._key
-
-        @key.setter
-        def key(self, key):
-            if not key:
-                raise ValueError("Invalid Key File")
-
-            self._key = key
-
-        # User account to use for device connections
-        @property
-        def user(self):
-            return self._user
-
-        @user.setter
-        def user(self, user):
-            if not user:
-                raise ValueError("No User Provided")
-
-            self._user = user
+        self._user = user
 
     # Method to build netmiko compatible device object
     def build(self):
@@ -89,11 +95,11 @@ class Device:
 
     # Function to send command to device
 
-    def send_cmd(self, cmd):
-
-        # Netmiko run command
-        with netmiko.ConnectHandler(**self.build()) as net_connect:
-            return net_connect.send_command(cmd)
+#    def send_cmd(self, cmd):
+#
+#        # Netmiko run command
+#        with netmiko.ConnectHandler(**self.build()) as net_connect:
+#            return net_connect.send_command(cmd)
 
 
 # Function to initialize new Device objects
