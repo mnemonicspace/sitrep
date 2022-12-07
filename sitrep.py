@@ -26,16 +26,16 @@ def main():
 #
 
 
-# def send_mail(report):
-#     SERVER = "localhost"
+# def send_mail(report, text):
+#     SERVER = "smtp.novanthealth.org"
 #
-#     FROM = 'nse@novanthealth.org'
+#     FROM = 'nse_sitrep@novanthealth.org'
 #
 #     TO = ["cpsnse@novanthealth.org"] # must be a list
 #
 #     SUBJECT = "Sitrep {date.today()}"
 #
-#     TEXT = "This message was sent with Python's smtplib."
+#     TEXT = MIMEText(text, html) 
 #
 #     # Prepare actual message
 #
@@ -49,7 +49,7 @@ def main():
     #
     # # Send the mail
 #
-#     server = smtplib.SMTP('myserver')
+#     server = smtplib.SMTP(SERVER)
 #     server.sendmail(FROM, TO, message)
 #     server.quit()
 

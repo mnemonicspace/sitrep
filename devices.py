@@ -1,6 +1,6 @@
 #import netmiko
 import re
-from os.path import exixts
+from os.path import exists
 
 # Base class
 
@@ -34,8 +34,8 @@ class Device:
 
     @ip.setter
     def ip(self, ip):
-	if not isinstance(ip, str):
-	    raise ValueError("Invalid IP Provided")
+        if not isinstance(ip, str):
+            raise ValueError("Invalid IP Provided")
 
         valid = re.findall(
             r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ip)
