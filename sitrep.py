@@ -7,22 +7,31 @@ import csv
 def main():
 
     # create devices
-    palo_list = {
-        "vpn_dc1": devices.create("homebridge", "300.10.20.78", "linux", "ansible"),
-    }
+    palo_list = [
+        devices.create("DC1-VPN", "10.1.14.131", "paloalto_panos", "admin"),
+        devices.create("601-VPN", "10.1.11.131", "paloalto_panos", "admin")
+    ]
+
+    cisco_list = [
+        devices.create("DC1-6807", "10.1.14.131", "paloalto_panos", "admin"),
+        devices.create("601-6807", "10.1.11.131", "paloalto_panos", "admin")
+    ]
+
+    p_command = "show system high-availability state"
+    c_command = "show standby brief"
 
     # run uptime on devices and create dict of responses
-    command = "uptime"
-    data = {dev.name: dev.send_cmd(command) for dev in palo_list.values()}
+    palo_data = {dev.name: dev.send_cmd(p_command) for dev in palo_list}
 
-    print(data)
+    cisco_data = {dev.name: dev.send_cmd(c_command) for dev in cisco_list}
 
 
-# Function to Get uptime
-def get_uptime(device):
-
-    # create netmiko object with device attrib
-    return send_cmd(device.build(), command)
+def get_report(palo, cisco):
+    with open(f"{date.today}.csv", 'w') as file:
+        writer = csv.DictWriter(file, fieldnames=["Device", "State"])
+        writer.writeheader()
+        writer.writerow(palo)
+        writer.writerow(cisco)
 
 
 # def send_mail(report, text):
