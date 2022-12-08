@@ -1,4 +1,4 @@
-#import netmiko
+import netmiko
 import re
 from os.path import exists
 
@@ -14,7 +14,6 @@ class Device:
         self.platform = platform
         self.user = user
         self.key = key
-
 
     @property
     def name(self):
@@ -51,9 +50,9 @@ class Device:
 
     @platform.setter
     def platform(self, platform):
-       
+
         platforms = ["paloalto_panos", "cisco_ios"]
-       
+
         if platform not in platforms or not isinstance(platform, str):
             raise ValueError("Invalid Platform Provided")
 
@@ -95,11 +94,11 @@ class Device:
 
     # Function to send command to device
 
-#    def send_cmd(self, cmd):
-#
-#        # Netmiko run command
-#        with netmiko.ConnectHandler(**self.build()) as net_connect:
-#            return net_connect.send_command(cmd)
+    def send_cmd(self, cmd):
+
+        # Netmiko run command
+        with netmiko.ConnectHandler(**self.build()) as net_connect:
+            return net_connect.send_command(cmd)
 
 
 # Function to initialize new Device objects

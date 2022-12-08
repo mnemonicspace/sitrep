@@ -19,11 +19,10 @@ def main():
 
 
 # Function to Get uptime
-# def get_uptime(device):
-#
-#     # create netmiko object with device attrib
-#     return send_cmd(device.build(), command)
-#
+def get_uptime(device):
+
+    # create netmiko object with device attrib
+    return send_cmd(device.build(), command)
 
 
 # def send_mail(report, text):
@@ -35,7 +34,7 @@ def main():
 #
 #     SUBJECT = "Sitrep {date.today()}"
 #
-#     TEXT = MIMEText(text, html) 
+#     TEXT = MIMEText(text, html)
 #
 #     # Prepare actual message
 #
@@ -52,7 +51,6 @@ def main():
 #     server = smtplib.SMTP(SERVER)
 #     server.sendmail(FROM, TO, message)
 #     server.quit()
-
 
 if __name__ == "__main__":
     main()
