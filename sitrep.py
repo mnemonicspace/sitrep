@@ -59,8 +59,11 @@ def compare(palo, cisco):
 
     changed = []
 
-    wb = load_workbook(f"reports/{str(yesterday)}-sitrep.xlsx")
-    ws = wb["Sitrep"]
+    try:
+        wb = load_workbook(f"reports/{str(yesterday)}-sitrep.xlsx")
+        ws = wb["Sitrep"]
+    except:
+        return ['Yesterday\'s sitrep not detected']
 
     for row in range(1, 10):
         dev = ws[f"A{row}"].value
