@@ -51,7 +51,7 @@ class Device:
     @platform.setter
     def platform(self, platform):
 
-        platforms = ["paloalto_panos", "cisco_ios"]
+        platforms = ["paloalto_panos", "cisco_ios", "linux"]
 
         if platform not in platforms or not isinstance(platform, str):
             raise ValueError("Invalid Platform Provided")
