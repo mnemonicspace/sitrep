@@ -2,6 +2,7 @@ import devices
 import smtplib
 from datetime import date, timedelta
 from openpyxl import Workbook, load_workbook
+import re
 
 
 def main():
@@ -18,13 +19,15 @@ def main():
         # devices.create("601-6807", "10.1.11.131", "paloalto_panos", "admin")
     ]
 
-    p_command = "uptime"
-    c_command = "uptime"
+    p_command = "show high-availability state"
+    c_command = "show standby brief"
 
     # run uptime on devices and create dict of responses
-    palo_data = {dev.name: dev.send_cmd(p_command) for dev in palo_list}
+    palo_data = {dev.name: re.findall(
+        r"\A[^,]+?State: (active|passive) \(", str(dev.send_cmd(p_command))) for dev in palo_list}
 
-    cisco_data = {dev.name: dev.send_cmd(c_command) for dev in cisco_list}
+    cisco_data = {dev.name: re.findall(
+        r"(Vl\d+) +.*P (Active|Standby)", str(dev.send_cmd(c_command))) for dev in cisco_list}
 
     get_report(palo_data, cisco_data)
     changed = compare(palo_data, cisco_data)
@@ -34,8 +37,8 @@ def main():
     else:
         text = "The following devices have changed state:\n\n" + \
             '\n'.join(changed)
-
     print(text)
+    # send_mail(f"reports/{str(date.today())}-sitrep.xlsx", text)
 
 
 def get_report(palo, cisco):
@@ -87,14 +90,11 @@ def compare(palo, cisco):
 
 # def send_mail(report, text):
 #     SERVER = "smtp.novanthealth.org"
-#
 #     FROM = 'nse_sitrep@novanthealth.org'
-#
 #     TO = ["cpsnse@novanthealth.org"] # must be a list
-#
 #     SUBJECT = "Sitrep {date.today()}"
-#
 #     TEXT = MIMEText(text, html)
+    # filename = report
 #
 #     # Prepare actual message
 #
