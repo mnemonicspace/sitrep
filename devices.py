@@ -90,6 +90,7 @@ class Device:
             "username": self.user,
             "use_keys": True,
             "key_file": self.key,
+            "ssh_config_file": "/Users/msexton/.ssh/config"
         }
 
     # Function to send command to device
@@ -97,7 +98,7 @@ class Device:
     def send_cmd(self, cmd):
 
         # Netmiko run command
-        with netmiko.ConnectHandler(**self.build()) as net_connect:
+        with netmiko.ConnectHandler(**self.build(), disabled_algorithms={'pubkeys': ['rsa-sha2-256', 'rsa-sha2-512']}) as net_connect:
             return net_connect.send_command(cmd)
 
 
