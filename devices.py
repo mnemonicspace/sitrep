@@ -6,7 +6,7 @@ from os.path import exists
 
 
 class Device:
-    def __init__(self, name, ip, platform, user, key):
+    def __init__(self, name: str, ip: str, platform: str, user: str, key: str):
 
         # Run setters to initialize values
         self.name = name
@@ -21,9 +21,8 @@ class Device:
 
     @name.setter
     def name(self, name):
-        if not name or not isinstance(name, str):
-            raise ValueError("Invalid Name Provided")
-
+        if not name:
+            raise ValueError("No name provided")
         self._name = name
 
     # IP of device
@@ -33,11 +32,12 @@ class Device:
 
     @ip.setter
     def ip(self, ip):
-        if not isinstance(ip, str):
-            raise ValueError("Invalid IP Provided")
+        if not ip:
+            raise ValueError("No IP Provided")
 
         valid = re.findall(
             r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ip)
+
         if len(valid) != 1:
             raise ValueError("Invalid IP Provided")
         else:
@@ -53,7 +53,7 @@ class Device:
 
         platforms = ["paloalto_panos", "cisco_ios", "linux"]
 
-        if platform not in platforms or not isinstance(platform, str):
+        if platform not in platforms:
             raise ValueError("Invalid Platform Provided")
 
         self._platform = platform
@@ -65,7 +65,7 @@ class Device:
 
     @key.setter
     def key(self, key):
-        if not key or not isinstance(key, str) or not exists(key):
+        if not key or not exists(key):
             raise ValueError("Invalid Key File")
 
         self._key = key
@@ -77,7 +77,7 @@ class Device:
 
     @user.setter
     def user(self, user):
-        if not user or not isinstance(user, str):
+        if not user:
             raise ValueError("Invalid User Provided")
 
         self._user = user
