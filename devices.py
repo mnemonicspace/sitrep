@@ -3,8 +3,6 @@ import re
 from os.path import exists
 
 # Base class
-
-
 class Device:
     def __init__(self, name: str, ip: str, platform: str, user: str, key: str):
 
