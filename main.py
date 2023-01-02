@@ -28,6 +28,8 @@ def main():
 
     cisco_data = {dev.name: re.findall(
         r"\A[^,]+?P (Active|Standby)", str(dev.send_cmd(c_command))) for dev in cisco_list}
+    print(cisco_data)
+    
     get_report(palo_data, cisco_data)
     changed = compare(palo_data, cisco_data)
 
