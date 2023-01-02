@@ -1,14 +1,11 @@
-import devices
-import smtplib
+import app.nhcisco as nhcisco
+import app.nhpalo as nhpalo
+import app.config as config
+from app.nhmail import send_mail
 from datetime import date, timedelta
 from openpyxl import Workbook, load_workbook
 import re
-from xapi import PanXapiError, PanXapi
 import xml.etree.ElementTree as ET
-from email.mime.multipart import MIMEMultipart
-from email.mime.application import MIMEApplication
-from email.mime.text import MIMEText
-from config import api
 
 
 def main():
@@ -19,9 +16,9 @@ def main():
     ]
 
     cisco_list = [
-        devices.create("DC1-6807", "172.16.50.60", "cisco_ios",
+        nhcisco.create("DC1-6807", "172.16.50.60", "cisco_ios",
                        "lab", "/Users/msexton/.ssh/lab"),
-        devices.create("601-6807", "172.16.50.60", "cisco_ios",
+        nhcisco.create("601-6807", "172.16.50.60", "cisco_ios",
                        "lab", "/Users/msexton/.ssh/lab")
     ]
 
@@ -91,30 +88,6 @@ def compare(palo, cisco):
             changed.append(dev)
 
     return changed
-
-
-def send_mail(report, text):
-    SERVER = 'smtp.novanthealth.org'
-    PORT = 443
-
-    msg = MIMEMultipart()
-    body_part = MIMEText(text, 'plain')
-    msg['Subject'] = f"Sitrep {date.today()}"
-    msg['From'] = 'nse_sitrep@novanthealth.org'
-    msg['To'] = 'cpsnse@novanthealth.org'
-    # Add body to email
-    msg.attach(body_part)
-    # open and read the CSV file in binary
-    with open(report, 'rb') as file:
-        # Attach the file with filename to the email
-        msg.attach(MIMEApplication(file.read(), Name=report))
-
-    # Create SMTP object
-    smtp_obj = smtplib.SMTP(SERVER, PORT)
-
-    # Convert the message to a string and send it
-    smtp_obj.sendmail(msg['From'], msg['To'], msg.as_string())
-    smtp_obj.quit()
 
 
 if __name__ == "__main__":
