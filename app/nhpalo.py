@@ -53,7 +53,7 @@ class Palo:
         self._url = url
                 
     def ha_state(self):
-        uri = f"?type=op&cmd=<show><high-availability><state></state></high-availability><?show>&key={self.api}"
+        uri = f"?type=op&cmd=<show><high-availability><state></state></high-availability></show>&key={self.api}"
         request = f"{self.url}{uri}"
         response = requests.get(request, verify=False)
         return response
