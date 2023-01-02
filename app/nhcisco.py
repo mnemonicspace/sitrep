@@ -65,9 +65,8 @@ class Cisco:
 
     @key.setter
     def key(self, key):
-        # if not exists(str(key)):
-        #     print("key: "+str(key))
-        #     raise ValueError("Invalid Key File")
+        if not exists(str(key)):
+            raise ValueError("Invalid Key File")
 
         self._key = key
 
@@ -82,7 +81,7 @@ class Cisco:
             raise ValueError("Invalid User Provided")
 
         self._user = user
-        
+
     @property
     def prompt(self):
         return self._prompt
@@ -94,15 +93,14 @@ class Cisco:
 
         self._prompt = prompt
 
-
     # Function to send command to device
 
     def send_cmd(self, cmd):
         ssh_options = {'IdentityFile': f"{self.key}"}
         connection = pxssh.pxssh(options=ssh_options)
-        connection.login(self.ip, self.user, original_prompt=self.prompt, auto_prompt_reset=False)
+        connection.login(self.ip, self.user,
+                         original_prompt=self.prompt, auto_prompt_reset=False)
         connection.sendline(cmd)
         connection.expect('#')
         response = connection.before.decode()
-        print(response)
         return response

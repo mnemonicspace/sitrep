@@ -16,8 +16,10 @@ def main():
     ]
 
     cisco_list = [
-        nhcisco.Cisco("DC1-6807", "172.16.50.60", "lab", "/Users/msexton/.ssh/lab", "AutoLab-sw1"),
-        nhcisco.Cisco("601-6807", "172.16.50.61", "lab", "/Users/msexton/.ssh/lab", "AutoLab-sw2")
+        nhcisco.Cisco("DC1-6807", "172.16.50.60", "lab",
+                      "/Users/msexton/.ssh/lab", "AutoLab-sw1#"),
+        nhcisco.Cisco("601-6807", "172.16.50.61", "lab",
+                      "/Users/msexton/.ssh/lab", "AutoLab-sw2#")
     ]
 
     c_command = "show standby brief"
@@ -28,8 +30,7 @@ def main():
 
     cisco_data = {dev.name: re.findall(
         r"\A[^,]+?P (Active|Standby)", str(dev.send_cmd(c_command))) for dev in cisco_list}
-    print(cisco_data)
-    
+
     get_report(palo_data, cisco_data)
     changed = compare(palo_data, cisco_data)
 
@@ -83,7 +84,7 @@ def compare(palo, cisco):
         else:
             continue
 
-        if state != old_state:
+        if state.lower() != old_state.lower():
             changed.append(dev)
 
     return changed
