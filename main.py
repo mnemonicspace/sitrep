@@ -17,8 +17,8 @@ def main():
 
     cisco_list = [
         nhcisco.create(f"DC1-6807", "172.16.50.60", "cisco_ios",
-                       {str(config.ssh_user)}, {str(config.ssh_key)}),
-        nhcisco.create("601-6807", "172.16.50.60", "cisco_ios",
+                       "lab", {str(config.ssh_key)}),
+        nhcisco.create("601-6807", "/Users/msexton/.ssh/lab",
                        "lab", "/Users/msexton/.ssh/lab")
     ]
 
