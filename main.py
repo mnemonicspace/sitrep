@@ -26,7 +26,7 @@ def main():
     c_command = "show standby brief"
 
     # run uptime on devices and create dict of responses
-    palo_data = {dev.name: ET.fromstring(dev.ha_state().text()).find(
+    palo_data = {dev.name: ET.fromstring(dev.ha_state().content).find(
         'result').find('group').find('local-info').find('state').text for dev in palo_list}
 
     cisco_data = {dev.name: re.findall(
