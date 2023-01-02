@@ -55,7 +55,7 @@ class Palo:
     def ha_state(self):
         uri = f"?type=op&cmd=<show><high-availability><state></state></high-availability><?show>&key={self.api}"
         request = f"{self.url}{uri}"
-        reponse = requests.get(request, verify=False)
+        response = requests.get(request, verify=False)
         return response
     
           
