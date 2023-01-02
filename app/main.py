@@ -11,8 +11,8 @@ import xml.etree.ElementTree as ET
 def main():
     # create devices
     palo_list = [
-        PanXapi(tag='DC1_VPN', api_key=api, hostname='172.16.50.50'),
-        PanXapi(tag='601_VPN', api_key=api, hostname='172.16.50.51')
+        nhpalo.Palo(tag='DC1_VPN', api_key=config.api, hostname='172.16.50.50'),
+        nhpalo.Palo(tag='601_VPN', api_key=config.api, hostname='172.16.50.51')
     ]
 
     cisco_list = [
@@ -26,7 +26,7 @@ def main():
     c_command = "show standby brief"
 
     # run uptime on devices and create dict of responses
-    palo_data = {dev.tag: ET.fromstring(dev.op(p_command).read()).find(
+    palo_data = {dev.tag: ET.fromstring(dev.ha_state().read()).find(
         'result').find('group').find('local-info').find('state').text for dev in palo_list}
 
     cisco_data = {dev.name: re.findall(

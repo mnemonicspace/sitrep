@@ -1,10 +1,12 @@
 import re
+import requests
 
 class Palo:
     def __init__(self, name: str, api: str, ip: str):
         self.name = name
         self.api = api
         self.ip = ip
+        self.url = f"https://{self.ip}/api/"
     
     @property
     def name(self):
@@ -42,7 +44,21 @@ class Palo:
             raise ValueError("Invalid IP Provided")
         else:
             self._ip = ip
-            
+    @property
+    def url(self):
+        return self._url
+    
+    @url.setter
+    def url(self, url):
+        self._url = url
+                
+    def ha_state(self):
+        uri = f"?REST_API_TOKEN={self.api}&type=op&cmd=<show><high-availability><state></state></high-availability><?show>"
+        request = f"{self.url}{uri}"
+        reponse = requests.get(request, verify=False)
+        return response
+    
+          
 # Function to initialize new Device objects
 def create(name, ip, api):
     return Palo(name, ip, api)
