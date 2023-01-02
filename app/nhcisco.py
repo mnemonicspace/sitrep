@@ -104,4 +104,5 @@ class Cisco:
         connection.sendline(cmd)
         connection.expect('#')
         response = connection.before.decode()
+        print(response)
         return response
