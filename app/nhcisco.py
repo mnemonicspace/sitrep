@@ -1,4 +1,4 @@
-import netmiko
+from pexpect import pxssh
 import re
 from os.path import exists
 
@@ -6,14 +6,14 @@ from os.path import exists
 
 
 class Cisco:
-    def __init__(self, name: str, ip: str, platform: str, user: str, key: str):
+    def __init__(self, name: str, ip: str, user: str, key: str, prompt: str):
 
         # Run setters to initialize values
         self.name = name
         self.ip = ip
-        self.platform = platform
         self.user = user
         self.key = key
+        self.prompt = prompt
 
     @property
     def name(self):
@@ -82,27 +82,26 @@ class Cisco:
             raise ValueError("Invalid User Provided")
 
         self._user = user
+        
+    @property
+    def prompt(self):
+        return self._prompt
 
-    # Method to build netmiko compatible device object
-    def build(self):
-        return {
-            "device_type": self.platform,
-            "host": self.ip,
-            "username": self.user,
-            "use_keys": True,
-            "key_file": self.key,
-            "ssh_config_file": "/Users/msexton/.ssh/config"
-        }
+    @prompt.setter
+    def prompt(self, prompt):
+        if not prompt:
+            raise ValueError("Invalid Prompt Provided")
+
+        self._prompt = prompt
+
 
     # Function to send command to device
 
     def send_cmd(self, cmd):
-
-        # Netmiko run command
-        with netmiko.ConnectHandler(**self.build(), disabled_algorithms={'pubkeys': ['rsa-sha2-256', 'rsa-sha2-512']}) as net_connect:
-            return net_connect.send_command(cmd)
-
-
-# Function to initialize new Device objects
-def create(name, ip, platform, user, key="/Users/msexton/.ssh/ansible"):
-    return Cisco(name, ip, platform, user, key)
+        ssh_options = {'IdentityFile': f"{self.key}"}
+        connection = pxssh.pxssh(options=ssh_options)
+        connection.login(self.ip, self.user, original_prompt=self.prompt, auto_prompt_reset=False)
+        connection.sendline(cmd)
+        connection.expect('#')
+        response = connection.before.decode()
+        return response

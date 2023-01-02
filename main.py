@@ -17,12 +17,11 @@ def main():
 
     cisco_list = [
         nhcisco.Cisco("DC1-6807", "172.16.50.60", "cisco_ios",
-                      "lab", "/Users/msexton/.ssh/lab"),
+                      "lab", "/Users/msexton/.ssh/lab", "AutoLab-sw1"),
         nhcisco.Cisco("601-6807", "172.16.50.61", "cisco_ios",
-                      "lab", "/Users/msexton/.ssh/lab")
+                      "lab", "/Users/msexton/.ssh/lab", "AutoLab-sw2")
     ]
 
-    p_command = "<show><high-availability><state></state></high-availability></show>"
     c_command = "show standby brief"
 
     # run uptime on devices and create dict of responses
