@@ -3,6 +3,8 @@ import re
 from os.path import exists
 
 # Base class
+
+
 class Cisco:
     def __init__(self, name: str, ip: str, platform: str, user: str, key: str):
 
@@ -63,8 +65,9 @@ class Cisco:
 
     @key.setter
     def key(self, key):
-        if not key or not exists(str(key)):
-            raise ValueError("Invalid Key File")
+        # if not exists(str(key)):
+        #     print("key: "+str(key))
+        #     raise ValueError("Invalid Key File")
 
         self._key = key
 

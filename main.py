@@ -16,17 +16,17 @@ def main():
     ]
 
     cisco_list = [
-        nhcisco.create(f"DC1-6807", "172.16.50.60", "cisco_ios",
-                       "lab", {str(config.ssh_key)}),
-        nhcisco.create("601-6807", "/Users/msexton/.ssh/lab",
-                       "lab", "/Users/msexton/.ssh/lab")
+        nhcisco.Cisco("DC1-6807", "172.16.50.60", "cisco_ios",
+                      "lab", "/Users/msexton/.ssh/lab"),
+        nhcisco.Cisco("601-6807", "172.16.50.61", "cisco_ios",
+                      "lab", "/Users/msexton/.ssh/lab")
     ]
 
     p_command = "<show><high-availability><state></state></high-availability></show>"
     c_command = "show standby brief"
 
     # run uptime on devices and create dict of responses
-    palo_data = {dev.tag: ET.fromstring(dev.ha_state().text()).find(
+    palo_data = {dev.name: ET.fromstring(dev.ha_state().text()).find(
         'result').find('group').find('local-info').find('state').text for dev in palo_list}
 
     cisco_data = {dev.name: re.findall(
