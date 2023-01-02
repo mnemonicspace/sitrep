@@ -63,7 +63,7 @@ class Cisco:
 
     @key.setter
     def key(self, key):
-        if not key or not exists(key):
+        if not key or not exists(str(key)):
             raise ValueError("Invalid Key File")
 
         self._key = key
