@@ -16,10 +16,8 @@ def main():
     ]
 
     cisco_list = [
-        nhcisco.Cisco("DC1-6807", "172.16.50.60", "cisco_ios",
-                      "lab", "/Users/msexton/.ssh/lab", "AutoLab-sw1"),
-        nhcisco.Cisco("601-6807", "172.16.50.61", "cisco_ios",
-                      "lab", "/Users/msexton/.ssh/lab", "AutoLab-sw2")
+        nhcisco.Cisco("DC1-6807", "172.16.50.60", "cisco_ios", "lab", "/Users/msexton/.ssh/lab", "AutoLab-sw1"),
+        nhcisco.Cisco("601-6807", "172.16.50.61", "cisco_ios", "lab", "/Users/msexton/.ssh/lab", "AutoLab-sw2")
     ]
 
     c_command = "show standby brief"
