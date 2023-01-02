@@ -11,8 +11,8 @@ import xml.etree.ElementTree as ET
 def main():
     # create devices
     palo_list = [
-        nhpalo.Palo(tag='DC1_VPN', api_key=config.api, hostname='172.16.50.50'),
-        nhpalo.Palo(tag='601_VPN', api_key=config.api, hostname='172.16.50.51')
+        nhpalo.Palo('DC1_VPN', config.api, '172.16.50.50'),
+        nhpalo.Palo('601_VPN', config.api, '172.16.50.51')
     ]
 
     cisco_list = [
