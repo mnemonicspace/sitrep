@@ -1,2 +1,2 @@
 import pytest
-import app.nhcisco
+import app.nhcisco as nhcisco
