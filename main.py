@@ -1,6 +1,6 @@
 import app.nhcisco as nhcisco
 import app.nhpalo as nhpalo
-import app.config as config
+import config.config as config
 from app.nhmail import send_mail
 from datetime import date, timedelta
 from openpyxl import Workbook, load_workbook
@@ -16,8 +16,8 @@ def main():
     ]
 
     cisco_list = [
-        nhcisco.Cisco("DC1-6807", "172.16.50.60", "lab",
-                      "/Users/msexton/.ssh/lab", "AutoLab-sw1#"),
+        nhcisco.Cisco("DC1-6807", "172.16.50.60", config.ssh_user,
+                      config.ssh_key, "AutoLab-sw1#"),
         nhcisco.Cisco("601-6807", "172.16.50.61", "lab",
                       "/Users/msexton/.ssh/lab", "AutoLab-sw2#")
     ]

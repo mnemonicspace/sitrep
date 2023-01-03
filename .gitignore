@@ -2,3 +2,4 @@ config.py
 venv/
 reports/
 requirements.in
+*.ini
