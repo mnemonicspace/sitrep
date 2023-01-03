@@ -14,7 +14,7 @@ def palo_compile():
             config[section]['api'],
             config[section]['ip']
             ))
-        return devices
+    return devices
 
 def cisco_compile():
     devices = []
@@ -29,4 +29,4 @@ def cisco_compile():
             config[section]['key'],
             config[section]['prompt']
             ))
-        return devices
+    return devices
