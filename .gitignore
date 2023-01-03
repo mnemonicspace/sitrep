@@ -1,6 +1,6 @@
 config.py
 **/venv
-**/reports/*.xlsx
+*.xlsx
 requirements.in
 *.ini
 .DS_Store
