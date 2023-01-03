@@ -1,8 +1,7 @@
 config.py
 **/venv
-**/reports
+**/reports/*.xlsx
 requirements.in
 *.ini
-reports/*.xlsx
 .DS_Store
 **/__pycache__
