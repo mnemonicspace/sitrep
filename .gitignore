@@ -3,3 +3,4 @@ config.py
 **/reports
 requirements.in
 *.ini
+reports/

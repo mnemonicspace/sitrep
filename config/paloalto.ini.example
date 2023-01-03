@@ -1,0 +1,21 @@
+; to be named paloalto.ini
+
+[VPN 601]
+name = ""
+api = ""
+ip = ""
+
+[VPN DC1]
+name = ""
+api = ""
+ip = ""
+
+[DMZ 601]
+name = ""
+api = ""
+ip = ""
+
+[DMZ DC1]
+name = ""
+api = ""
+ip = ""
