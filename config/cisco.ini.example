@@ -1,6 +1,6 @@
 ; to be named cisco.ini
 
-[6807 601]
+[Device 1]
 name = ""
 ip = ""
 user = ""
