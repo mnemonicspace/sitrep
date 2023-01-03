@@ -29,7 +29,7 @@ def main():
         sys.exit()
 
     # set command to send to cisco devices
-    palo_xpath = "<show><ha><state></state></ha></state>"
+    palo_xpath = "<show><high-availability><state></state></high-availability></show>"
     cisco_command = "show standby brief"
 
     # run commands on devices and create dict of responses
