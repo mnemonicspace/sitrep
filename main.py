@@ -1,6 +1,5 @@
-import app.nhcisco as nhcisco
-import app.nhpalo as nhpalo
-import config.config as config
+
+from app.device_compile import cisco_compile, palo_compile
 from app.nhmail import send_mail
 from datetime import date, timedelta
 from openpyxl import Workbook, load_workbook
@@ -10,26 +9,20 @@ import xml.etree.ElementTree as ET
 
 def main():
     # create devices
-    palo_list = [
-        nhpalo.Palo('DC1_VPN', config.api, '172.16.50.50'),
-        nhpalo.Palo('601_VPN', config.api, '172.16.50.51')
-    ]
+    palo_list = palo_compile()
+    cisco_list = cisco_compile()
+    
+    print(cisco_list)
+    print(palo_list)
 
-    cisco_list = [
-        nhcisco.Cisco("DC1-6807", "172.16.50.60", config.ssh_user,
-                      config.ssh_key, "AutoLab-sw1#"),
-        nhcisco.Cisco("601-6807", "172.16.50.61", "lab",
-                      "/Users/msexton/.ssh/lab", "AutoLab-sw2#")
-    ]
-
-    c_command = "show standby brief"
+    cisco_command = "show standby brief"
 
     # run uptime on devices and create dict of responses
     palo_data = {dev.name: ET.fromstring(dev.ha_state().content).find(
         'result').find('group').find('local-info').find('state').text for dev in palo_list}
 
     cisco_data = {dev.name: re.findall(
-        r"\A[^,]+?P (Active|Standby)", str(dev.send_cmd(c_command))) for dev in cisco_list}
+        r"\A[^,]+?P (Active|Standby)", str(dev.send_cmd(cisco_command))) for dev in cisco_list}
 
     get_report(palo_data, cisco_data)
     changed = compare(palo_data, cisco_data)

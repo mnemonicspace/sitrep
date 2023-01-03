@@ -1,1 +1,8 @@
 ; to be named cisco.ini
+
+[6807 601]
+name = ""
+ip = ""
+user = ""
+key = ""
+prompt = ""
