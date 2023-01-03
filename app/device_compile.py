@@ -1,5 +1,4 @@
 import configparser
-import os
 import app.nhcisco as nhcisco
 import app.nhpalo as nhpalo
 

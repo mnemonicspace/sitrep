@@ -4,3 +4,5 @@ config.py
 requirements.in
 *.ini
 reports/
+.DS_Store
+**/__pycache__
