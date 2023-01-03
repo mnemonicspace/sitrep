@@ -6,3 +6,4 @@ requirements.in
 **/.python-version
 .vscode/
 *.log
+tests/
