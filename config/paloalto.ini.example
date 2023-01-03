@@ -1,6 +1,11 @@
 ; to be named paloalto.ini
 
 [Device 1]
-name = ""
-api = ""
-ip = ""
+name = mydevice 
+api = O00l0ok4tth1skey
+ip = 198.18.100.100
+
+[Device 2]
+name = anotherdevice 
+api = O00l0ok4tth1skeytoo
+ip = 198.18.100.200

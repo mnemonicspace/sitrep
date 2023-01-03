@@ -1,0 +1,9 @@
+; to be named mailconfig.ini
+
+[MAIL SERVER]
+user = me@email.com 
+password = secret
+sender = sender@email.com
+receiver = person@email.com
+server = smtp.email.com
+port = 465

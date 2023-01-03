@@ -1,8 +1,15 @@
 ; to be named cisco.ini
 
 [Device 1]
-name = ""
-ip = ""
-user = ""
-key = ""
-prompt = ""
+name = myswitch
+ip = 198.18.100.100
+user = cisco
+key = /.ssh/key
+prompt = cisco#
+
+[Device 2]
+name = myrouter
+ip = 198.18.100.200
+user = cisco
+key = /.ssh/key
+prompt = cisco-ASA#

@@ -51,7 +51,7 @@ def main():
         sys.exit()
 
     try:
-        get_report(palo_data, cisco_data)
+        report = get_report(palo_data, cisco_data)
     except Exception as e:
         logging.error("Could not generate report: {e}")
         sys.exit()
@@ -63,12 +63,12 @@ def main():
         
 
     if len(changed) == 0:
-        text = "No changes"
+        text = "No devices have changed state from the previous day"
     else:
         text = "The following devices have changed state:\n\n" + \
             '\n'.join(changed)
     print(text)
-    # send_mail(f"reports/{str(date.today())}-sitrep.xlsx", text)
+    send_mail(report, text)
     logging.info(f"Completed running at {datetime.now()}")
 
 
@@ -94,9 +94,12 @@ def get_report(palo, cisco):
        raise RuntimeError(f"Could not add Palo Alto data to workbook: {e}") 
 
     try:
-        wb.save(f"{os.getcwd()}/reports/{str(date.today())}-sitrep.xlsx")
+        report = f"{os.getcwd()}/reports/{str(date.today())}-sitrep.xlsx"
+        wb.save(report)
     except Exception as e:
        raise RuntimeError(f"Could not save workbook: {e}")
+   
+    return report
 
 
 def compare(palo, cisco):
