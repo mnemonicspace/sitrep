@@ -5,3 +5,4 @@ requirements.in
 *.ini
 .DS_Store
 **/__pycache__
+**/.python-version

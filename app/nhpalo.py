@@ -57,8 +57,3 @@ class Palo:
         request = f"{self.url}{uri}"
         response = requests.get(request, verify=False)
         return response
-    
-          
-# Function to initialize new Device objects
-def create(name, ip, api):
-    return Palo(name, ip, api)

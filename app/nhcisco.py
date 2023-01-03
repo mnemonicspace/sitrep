@@ -3,8 +3,6 @@ import re
 from os.path import exists
 
 # Base class
-
-
 class Cisco:
     def __init__(self, name: str, ip: str, user: str, key: str, prompt: str):
 
@@ -94,7 +92,6 @@ class Cisco:
         self._prompt = prompt
 
     # Function to send command to device
-
     def send_cmd(self, cmd):
         ssh_options = {'IdentityFile': f"{self.key}"}
         connection = pxssh.pxssh(options=ssh_options)
