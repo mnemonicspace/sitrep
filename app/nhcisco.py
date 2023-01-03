@@ -93,11 +93,14 @@ class Cisco:
 
     # Function to send command to device
     def send_cmd(self, cmd):
-        ssh_options = {'IdentityFile': f"{self.key}"}
-        connection = pxssh.pxssh(options=ssh_options)
-        connection.login(self.ip, self.user,
-                         original_prompt=self.prompt, auto_prompt_reset=False)
-        connection.sendline(cmd)
-        connection.expect('#')
-        response = connection.before.decode()
-        return response
+        try:
+            ssh_options = {'IdentityFile': f"{self.key}"}
+            connection = pxssh.pxssh(options=ssh_options)
+            connection.login(self.ip, self.user,
+                            original_prompt=self.prompt, auto_prompt_reset=False)
+            connection.sendline(cmd)
+            connection.expect('#')
+            response = connection.before.decode()
+            return response
+        except Exception as e:
+            raise RuntimeError(f"{e}")

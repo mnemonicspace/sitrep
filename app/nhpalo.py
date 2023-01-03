@@ -52,8 +52,11 @@ class Palo:
     def url(self, url):
         self._url = url
                 
-    def ha_state(self):
-        uri = f"?type=op&cmd=<show><high-availability><state></state></high-availability></show>&key={self.api}"
-        request = f"{self.url}{uri}"
-        response = requests.get(request, verify=False)
-        return response
+    def send_xpath(self, path):
+        try:
+            uri = f"?type=op&cmd={path}&key={self.api}"
+            request = f"{self.url}{uri}"
+            response = requests.get(request, verify=False)
+            return response
+        except Exception as e:
+            raise RuntimeError(f"{e}")
