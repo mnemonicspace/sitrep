@@ -16,11 +16,14 @@ def main():
     cisco_command = "show standby brief"
 
     # run uptime on devices and create dict of responses
-    palo_data = {dev.name: ET.fromstring(dev.ha_state().content).find(
-        'result').find('group').find('local-info').find('state').text for dev in palo_list}
-
-    cisco_data = {dev.name: re.findall(
-        r"\A[^,]+?P (Active|Standby)", str(dev.send_cmd(cisco_command))) for dev in cisco_list}
+    palo_data = {}
+    for dev in palo_list:
+        palo_data[dev.name] = ET.fromstring(dev.ha_state().content).find(
+        'result').find('group').find('local-info').find('state').text
+    
+    cisco_data = {}
+    for dev in cisco_list:
+        cisco_data[dev.name] = re.findall(r"\A[^,]+?P (Active|Standby)", str(dev.send_cmd(cisco_command)))
 
     get_report(palo_data, cisco_data)
     changed = compare(palo_data, cisco_data)
