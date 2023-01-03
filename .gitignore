@@ -4,3 +4,4 @@ requirements.in
 .DS_Store
 **/__pycache__
 **/.python-version
+.vscode/
