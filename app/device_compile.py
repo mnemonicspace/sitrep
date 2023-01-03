@@ -1,6 +1,6 @@
 import configparser
-import app.nhcisco as nhcisco
-import app.nhpalo as nhpalo
+import app.cisco as cisco
+import app.palo as palo
 
 
 def palo_compile():
@@ -13,7 +13,7 @@ def palo_compile():
     
     try:
         for section in config.sections():
-            devices.append(nhpalo.Palo(
+            devices.append(palo.Palo(
                 config[section]['name'],
                 config[section]['api'],
                 config[section]['ip']
@@ -33,7 +33,7 @@ def cisco_compile():
     
     try:
         for section in config.sections():
-            devices.append(nhcisco.Cisco(
+            devices.append(cisco.Cisco(
                 config[section]['name'],
                 config[section]['ip'],
                 config[section]['user'],

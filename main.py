@@ -1,5 +1,5 @@
 from app.device_compile import cisco_compile, palo_compile
-from app.nhmail import send_mail
+from app.mail import send_mail
 from datetime import date, timedelta, datetime
 from openpyxl import Workbook, load_workbook
 import re
