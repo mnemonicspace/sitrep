@@ -5,15 +5,13 @@ from datetime import date, timedelta
 from openpyxl import Workbook, load_workbook
 import re
 import xml.etree.ElementTree as ET
+import os
 
 
 def main():
     # create devices
     palo_list = palo_compile()
     cisco_list = cisco_compile()
-    
-    print(cisco_list)
-    print(palo_list)
 
     cisco_command = "show standby brief"
 
@@ -48,7 +46,7 @@ def get_report(palo, cisco):
     for name, state in palo.items():
         ws.append([name, state.title()])
 
-    wb.save(f"reports/{str(date.today())}-sitrep.xlsx")
+    wb.save(f"{os.getcwd()}/reports/{str(date.today())}-sitrep.xlsx")
 
 
 def compare(palo, cisco):

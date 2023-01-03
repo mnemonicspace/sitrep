@@ -3,6 +3,6 @@ config.py
 **/reports
 requirements.in
 *.ini
-reports/
+reports/*.xlsx
 .DS_Store
 **/__pycache__
