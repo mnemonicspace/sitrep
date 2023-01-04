@@ -4,7 +4,7 @@ from os.path import exists
 
 # class for cisco objects
 class Cisco:
-    def __init__(self, name: str, ip: str, user: str, key: str, prompt: str):
+    def __init__(self, name: str, ip: str, user: str, key: str, prompt: str, enable_prompt: str = '', enable_pass: str = ''):
 
         # Run setters to initialize values
         self.name = name
@@ -12,6 +12,8 @@ class Cisco:
         self.user = user
         self.key = key
         self.prompt = prompt
+        self.enable_prompt = enable_prompt
+        self.enable_pass = enable_pass
 
     @property
     def name(self):
@@ -70,14 +72,32 @@ class Cisco:
     def prompt(self):
         return self._prompt
 
-    # cli prompt of device's config mode
+    # cli prompt of device's non config mode
     @prompt.setter
     def prompt(self, prompt):
         if not prompt:
             raise ValueError("Invalid Prompt Provided")
 
         self._prompt = prompt
+    
+    @property
+    def enable_prompt(self):
+        return self._enable_prompt
 
+    # cli prompt of device's config mode
+    @enable_prompt.setter
+    def enable_prompt(self, enable_prompt):
+        self._enable_prompt = enable_prompt
+    
+    @property
+    def enable_pass(self):
+        return self._enable_pass
+
+    # cli prompt of device's config mode
+    @enable_pass.setter
+    def enable_pass(self, enable_pass):
+        self._enable_pass = enable_pass
+        
     # Function to send command to device
     def send_cmd(self, cmd):
         try:
@@ -85,8 +105,21 @@ class Cisco:
             connection = pxssh.pxssh(options=ssh_options)
             connection.login(self.ip, self.user,
                             original_prompt=self.prompt, auto_prompt_reset=False)
+            
+            # if enable credentials provided, try to enable, otherwise expect config mode
+            if self.enable_prompt and self.enable_pass:
+                connection.sendline('enable')
+                connection.expect_exact('Password:')
+                connection.sendline(self.enable_pass)
+                connection.expect_exact(self.enable_prompt)
+                prompt = self.enable_prompt
+            else:
+                connection.prompt()
+                #connection.expect(self.prompt)
+                prompt = self.prompt
+            
             connection.sendline(cmd)
-            connection.expect('#')
+            connection.expect_exact(prompt)
             response = connection.before.decode()
             return response
         except Exception as e:

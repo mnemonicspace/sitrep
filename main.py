@@ -19,13 +19,13 @@ def main():
     try:
         palo_list = palo_compile()
     except Exception as e:
-        logging.error("Could not compile paloalto.ini: {e}")
+        logging.error(f"Could not compile paloalto.ini: {e}")
         sys.exit()
     
     try:
         cisco_list = cisco_compile()
     except Exception as e:
-        logging.error("Could not compile cisco.ini: {e}")
+        logging.error(f"Could not compile cisco.ini: {e}")
         sys.exit()
 
     # set command to send to cisco devices
@@ -45,23 +45,23 @@ def main():
     cisco_data = {}
     try:
         for dev in cisco_list:
-            cisco_data[dev.name] = re.findall(r"\A[^,]+?P (Active|Standby)", str(dev.send_cmd(cisco_command)))
+           cisco_data[dev.name] = re.findall(r"\A[^,]+?P (Active|Standby)", str(dev.send_cmd(cisco_command)))
     except Exception as e:
-        logging.error("Invalid response from Cisco device: {e}")
+        logging.error(f"Invalid response from Cisco device: {e}")
         sys.exit()
 
     # user responses to create spreadsheet report
     try:
         report = get_report(palo_data, cisco_data)
     except Exception as e:
-        logging.error("Could not generate report: {e}")
+        logging.error(f"Could not generate report: {e}")
         sys.exit()
     
     # compare results to previous day to see if anything changed
     try:
         changed = compare(palo_data, cisco_data)
     except Exception as e:
-        logging.error("Could not compare today's data to historical data: {e}")
+        logging.error(f"Could not compare today's data to historical data: {e}")
         
     # generate the text for the email message
     if len(changed) == 0:
@@ -75,7 +75,7 @@ def main():
 
     # send report via mail
     try:
-        send_mail(report, text)
+        send_mail(text, report)
     except Exception as e:
         logging.error(f"Could not send mail: {e}")
 
@@ -149,7 +149,7 @@ def compare(palo, cisco):
             if state.lower() != old_state.lower():
                 changed.append(dev)
     except Exception as e:
-        logging.error("Could not parse previous report: {e}") 
+        logging.error(f"Could not parse previous report: {e}") 
         return ["Could not parse yesterday\'s sitrep, see log file for details"]
 
     # return the list of devices that changed state
