@@ -5,7 +5,13 @@ name = myswitch
 ip = 198.18.100.100
 user = cisco
 key = /.ssh/key
-prompt = cisco#
+prompt = cisco>
+
+;optional enable support, all 3 required if used
+enable_prompt = cisco#
+enable_pass = cisco
+enable_level = 5     ; 1-15, 15 is default
+
 
 [Device 2]
 name = myrouter
