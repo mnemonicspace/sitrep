@@ -2,7 +2,7 @@ from pexpect import pxssh
 import re
 from os.path import exists
 
-# Base class
+# class for cisco objects
 class Cisco:
     def __init__(self, name: str, ip: str, user: str, key: str, prompt: str):
 
@@ -33,6 +33,7 @@ class Cisco:
         if not ip:
             raise ValueError("No IP Provided")
 
+        # user regex to check for valid IP
         valid = re.findall(
             r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ip)
 
@@ -40,21 +41,6 @@ class Cisco:
             raise ValueError("Invalid IP Provided")
         else:
             self._ip = ip
-
-    # Maunufacturer Platform
-    @property
-    def platform(self):
-        return self._platform
-
-    @platform.setter
-    def platform(self, platform):
-
-        platforms = ["paloalto_panos", "cisco_ios", "linux"]
-
-        if platform not in platforms:
-            raise ValueError("Invalid Platform Provided")
-
-        self._platform = platform
 
     # SSH Keyfile location
     @property
@@ -84,6 +70,7 @@ class Cisco:
     def prompt(self):
         return self._prompt
 
+    # cli prompt of device's config mode
     @prompt.setter
     def prompt(self, prompt):
         if not prompt:

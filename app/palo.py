@@ -2,15 +2,19 @@ import re
 import requests
 import urllib3
 
+# disable warnings for self signed certs
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
+# class for palo alto objects
 class Palo:
     def __init__(self, name: str, api: str, ip: str):
+        # run setters to initiate values
         self.name = name
         self.api = api
         self.ip = ip
         self.url = f"https://{self.ip}/api/"
     
+    # name of device
     @property
     def name(self):
         return self._name
@@ -20,7 +24,8 @@ class Palo:
         if not name:
             raise ValueError("No name provided")
         self._name = name
-        
+
+    # api key    
     @property
     def api(self):
         return self._api
@@ -30,7 +35,8 @@ class Palo:
         if not api:
             raise ValueError("No name provided")
         self._api = api
-        
+
+    # ip address    
     @property
     def ip(self):
         return self._ip
@@ -40,6 +46,7 @@ class Palo:
         if not ip:
             raise ValueError("No IP Provided")
 
+        # use regex to check for valid IP
         valid = re.findall(
             r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ip)
 
@@ -47,6 +54,8 @@ class Palo:
             raise ValueError("Invalid IP Provided")
         else:
             self._ip = ip
+    
+    # url for api endpoint
     @property
     def url(self):
         return self._url
@@ -54,7 +63,8 @@ class Palo:
     @url.setter
     def url(self, url):
         self._url = url
-                
+
+    # class method to send XML api xpaths            
     def send_xpath(self, path):
         try:
             uri = f"?type=op&cmd={path}&key={self.api}"

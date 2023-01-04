@@ -50,29 +50,41 @@ def main():
         logging.error("Invalid response from Cisco device: {e}")
         sys.exit()
 
+    # user responses to create spreadsheet report
     try:
         report = get_report(palo_data, cisco_data)
     except Exception as e:
         logging.error("Could not generate report: {e}")
         sys.exit()
     
+    # compare results to previous day to see if anything changed
     try:
         changed = compare(palo_data, cisco_data)
     except Exception as e:
         logging.error("Could not compare today's data to historical data: {e}")
         
-
+    # generate the text for the email message
     if len(changed) == 0:
         text = "No devices have changed state from the previous day"
     else:
         text = "The following devices have changed state:\n\n" + \
             '\n'.join(changed)
-    print(text)
-    send_mail(report, text)
+    
+    # log result to log file as well
+    logging.info(text)
+
+    # send report via mail
+    try:
+        send_mail(report, text)
+    except Exception as e:
+        logging.error(f"Could not send mail: {e}")
+
+    # log completion to log file if successful
     logging.info(f"Completed running at {datetime.now()}")
 
 
 def get_report(palo, cisco):
+    # open new excel sheet and add headers
     try:
         wb = Workbook()
         ws = wb.active
@@ -81,6 +93,7 @@ def get_report(palo, cisco):
     except Exception as e:
         raise RuntimeError(f"Could not initialize workbook: {e}")
 
+    # add all devices and their states to spreadsheet
     try:
         for name, state in cisco.items():
             ws.append([name, state[0]])
@@ -93,21 +106,26 @@ def get_report(palo, cisco):
     except Exception as e:
        raise RuntimeError(f"Could not add Palo Alto data to workbook: {e}") 
 
+    # save the excel sheet with todays date to the /reports directory
     try:
         report = f"{os.getcwd()}/reports/{str(date.today())}-sitrep.xlsx"
         wb.save(report)
     except Exception as e:
        raise RuntimeError(f"Could not save workbook: {e}")
    
+    # return the report file path
     return report
 
 
 def compare(palo, cisco):
+    # get yesterday's date
     today = date.today()
     yesterday = today - timedelta(days=1)
 
+    # initiate list of changed devices
     changed = []
 
+    # try to open the report from the previous day
     try:
         wb = load_workbook(f"reports/{str(yesterday)}-sitrep.xlsx")
         ws = wb["Sitrep"]
@@ -115,6 +133,7 @@ def compare(palo, cisco):
         logging.error("Could not open previous report: {e}") 
         return ["Yesterday\'s sitrep not detected, see log file for details"]
 
+    # compare each device state to the previous day's state
     try:
         for row in range(1, 10):
             dev = ws[f"A{row}"].value
@@ -133,6 +152,7 @@ def compare(palo, cisco):
         logging.error("Could not parse previous report: {e}") 
         return ["Could not parse yesterday\'s sitrep, see log file for details"]
 
+    # return the list of devices that changed state
     return changed
 
 
