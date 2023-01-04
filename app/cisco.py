@@ -4,7 +4,7 @@ from os.path import exists
 
 # class for cisco objects
 class Cisco:
-    def __init__(self, name: str, ip: str, user: str, key: str, prompt: str, enable_prompt: str = '', enable_pass: str = ''):
+    def __init__(self, name: str, ip: str, user: str, key: str, prompt: str, enable_prompt: str = '', enable_pass: str = '', enable_level: str = '15'):
 
         # Run setters to initialize values
         self.name = name
@@ -14,6 +14,7 @@ class Cisco:
         self.prompt = prompt
         self.enable_prompt = enable_prompt
         self.enable_pass = enable_pass
+        self.enable_level = enable_level
 
     @property
     def name(self):
@@ -98,6 +99,15 @@ class Cisco:
     def enable_pass(self, enable_pass):
         self._enable_pass = enable_pass
         
+    @property
+    def enable_level(self):
+        return self._enable_level
+
+    # cli prompt of device's config mode
+    @enable_level.setter
+    def enable_level(self, enable_level):
+        self._enable_level = enable_level
+        
     # Function to send command to device
     def send_cmd(self, cmd):
         try:
@@ -108,7 +118,7 @@ class Cisco:
             
             # if enable credentials provided, try to enable, otherwise expect config mode
             if self.enable_prompt and self.enable_pass:
-                connection.sendline('enable')
+                connection.sendline(f"enable {self.enable_level}")
                 connection.expect_exact('Password:')
                 connection.sendline(self.enable_pass)
                 connection.expect_exact(self.enable_prompt)

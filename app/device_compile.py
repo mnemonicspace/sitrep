@@ -38,9 +38,11 @@ def cisco_compile():
             try:
                 enable_prompt = config[section]['enable_prompt']
                 enable_pass = config[section]['enable_pass']
+                enable_level = config[section]['enable_level']
             except KeyError:
                 enable_prompt = ''
                 enable_pass = ''
+                enable_level = '15'
             devices.append(cisco.Cisco(
                 config[section]['name'],
                 config[section]['ip'],
@@ -48,7 +50,8 @@ def cisco_compile():
                 config[section]['key'],
                 config[section]['prompt'],
                 enable_prompt,
-                enable_pass
+                enable_pass,
+                enable_level
                 ))
     except Exception as e:
         raise RuntimeError(f"Error creating devices: {e}")
