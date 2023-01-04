@@ -7,4 +7,3 @@ requirements.in
 .vscode/
 *.log
 tests/
-app/testconfig.py

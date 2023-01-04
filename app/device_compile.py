@@ -3,6 +3,7 @@ import app.cisco as cisco
 import app.palo as palo
 
 
+# Function to compile instances of Palo class objects from config file
 def palo_compile():
     try:
         devices = []
@@ -23,6 +24,7 @@ def palo_compile():
     
     return devices
 
+# Function to compile Cisco class objects from config file
 def cisco_compile():
     try:
         devices = []
