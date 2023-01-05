@@ -125,7 +125,6 @@ class Cisco:
                 prompt = self.enable_prompt
             else:
                 connection.prompt()
-                #connection.expect(self.prompt)
                 prompt = self.prompt
             
             connection.sendline(cmd)
