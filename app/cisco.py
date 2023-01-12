@@ -130,7 +130,6 @@ class Cisco:
             connection.sendline(cmd)
             connection.expect(['>','#'])
             response = connection.before.decode()
-            print('done')
             return response
         except Exception as e:
             raise RuntimeError(f"{e}")
