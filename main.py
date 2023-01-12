@@ -2,6 +2,7 @@ from app.device_compile import cisco_compile, palo_compile
 from app.mail import send_mail
 from datetime import date, timedelta, datetime
 from openpyxl import Workbook, load_workbook
+from openpyxl.styles import Font
 import re
 import xml.etree.ElementTree as ET
 import os
@@ -90,6 +91,9 @@ def get_report(palo, cisco):
         ws = wb.active
         ws.title = "Sitrep"
         ws.append(['Device Name', 'State'])
+        c = ws['A1':'A2']
+        c.font = Font(bold=True)
+        c.style = '40 % - Accent1'
     except Exception as e:
         raise RuntimeError(f"Could not initialize workbook: {e}")
 
