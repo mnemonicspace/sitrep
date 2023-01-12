@@ -110,29 +110,33 @@ def get_report(palo, cisco):
        raise RuntimeError(f"Could not add Palo Alto data to workbook: {e}") 
    
     try:
+        thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
         c = ws['A1']
         c.style = '40 % - Accent1'
         c.font = Font(bold=True)
-        c.border = Border(outline="thin")
+        c.border = thin_border
         c = ws['B1']
         c.style = '40 % - Accent1'
         c.font = Font(bold=True)
-        c.border = Border(outline="thin")
+        c.border = thin_border
         for row in ws.iter_rows():
             if row[0].value == 'Cisco Devices' or row[0].value == 'Palo Alto Devices':
                 row[0].style = '40 % - Accent2'
                 row[0].font = Font(bold=True)
-                row[0].border = Border(outline="thin")
+                row[0].border = thin_border
                 row[1].style = '40 % - Accent2'
                 row[1].font = Font(bold=True)
-                row[1].border = Border(outline="thin")
+                row[1].border = thin_border
             elif row[0].value == 'Device Name':
                 pass
             elif row[0].value:
                 row[0].style = '20 % - Accent3'
-                row[0].border = Border(outline="thin")
+                row[0].border = thin_border
                 row[1].style = '20 % - Accent3'
-                row[1].border = Border(outline="thin")
+                row[1].border = thin_border
                 
         ws.page_setup.fit_width = True
                 
