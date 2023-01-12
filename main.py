@@ -119,6 +119,13 @@ def get_report(palo, cisco):
         for row in ws.iter_rows():
             if row[0].value == 'Cisco Devices' or row[0] == 'Palo Alto Devices':
                 row[0].style = '40 % - Accent2'
+                row[0].font = Font(bold=True)
+                row[1].style = '40 % - Accent2'
+                row[1].font = Font(bold=True)
+            elif row[0].value:
+                row[0].style = '20 % - Accent3'
+                row[1].style = '20 % - Accent3'
+                
     except:
         pass
                 
