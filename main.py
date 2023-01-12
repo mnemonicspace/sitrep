@@ -91,14 +91,7 @@ def get_report(palo, cisco):
         ws = wb.active
         ws.title = "Sitrep"
         ws.append(['Device Name', 'State'])
-        ws.append(['Cisco']).font = Font(bold=True)
-        c = ws['A1']
-        c.style = '40 % - Accent1'
-        c.font = Font(bold=True)
-        c = ws['B1']
-        c.style = '40 % - Accent1'
-        c.font = Font(bold=True)
-        
+        ws.append(['Cisco Devices'])
     except Exception as e:
         raise RuntimeError(f"Could not initialize workbook: {e}")
 
@@ -110,11 +103,25 @@ def get_report(palo, cisco):
        raise RuntimeError(f"Could not add Cisco data to workbook: {e}")
    
     try:
-        ws.append(['Palo Alto']).font = Font(bold=True)
+        ws.append(['Palo Alto Devices'])
         for name, state in palo.items():
             ws.append([name, state.title()])
     except Exception as e:
        raise RuntimeError(f"Could not add Palo Alto data to workbook: {e}") 
+   
+    try:
+        c = ws['A1']
+        c.style = '40 % - Accent1'
+        c.font = Font(bold=True)
+        c = ws['B1']
+        c.style = '40 % - Accent1'
+        c.font = Font(bold=True)
+        for row in ws.iter_rows():
+            if row[0].value == 'Cisco Devices' or row[0] == 'Palo Alto Devices':
+                row[0].style = '40 % - Accent2'
+    except:
+        pass
+                
 
     # save the excel sheet with todays date to the /reports directory
     try:
