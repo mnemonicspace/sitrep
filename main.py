@@ -113,26 +113,26 @@ def get_report(palo, cisco):
         c = ws['A1']
         c.style = '40 % - Accent1'
         c.font = Font(bold=True)
-        c.border = Border(outline=Side(border_style="thin"))
+        c.border = Border(outline="thin")
         c = ws['B1']
         c.style = '40 % - Accent1'
         c.font = Font(bold=True)
-        c.border = Border(outline=Side(border_style="thin"))
+        c.border = Border(outline="thin")
         for row in ws.iter_rows():
             if row[0].value == 'Cisco Devices' or row[0].value == 'Palo Alto Devices':
                 row[0].style = '40 % - Accent2'
                 row[0].font = Font(bold=True)
-                row[0].border = Border(outline=Side(border_style="thin"))
+                row[0].border = Border(outline="thin")
                 row[1].style = '40 % - Accent2'
                 row[1].font = Font(bold=True)
-                row[1].border = Border(outline=Side(border_style="thin"))
+                row[1].border = Border(outline="thin")
             elif row[0].value == 'Device Name':
                 pass
             elif row[0].value:
                 row[0].style = '20 % - Accent3'
-                row[0].border = Border(outline=Side(border_style="thin"))
+                row[0].border = Border(outline="thin")
                 row[1].style = '20 % - Accent3'
-                row[1].border = Border(outline=Side(border_style="thin"))
+                row[1].border = Border(outline="thin")
                 
         ws.page_setup.fit_width = True
                 
