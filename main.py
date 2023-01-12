@@ -90,13 +90,16 @@ def get_report(palo, cisco):
         wb = Workbook()
         ws = wb.active
         ws.title = "Sitrep"
-        ws.append(['Device Name', 'State'])
+        
         c = ws['A1']
         c.font = Font(bold=True)
         c.style = '40 % - Accent1'
-        c = ws['A2']
+        c = ws['B1']
         c.font = Font(bold=True)
         c.style = '40 % - Accent1'
+        
+        ws.append(['Device Name', 'State'])
+        
     except Exception as e:
         raise RuntimeError(f"Could not initialize workbook: {e}")
 
