@@ -121,7 +121,7 @@ class Cisco:
                 connection.sendline(f"enable {self.enable_level}")
                 connection.expect_exact('Password:')
                 connection.sendline(self.enable_pass)
-                connection.expect_exact(self.enable_prompt)
+                connection.expect(self.enable_prompt)
                 prompt = self.enable_prompt
             else:
                 connection.prompt()
