@@ -117,14 +117,18 @@ def get_report(palo, cisco):
         c.style = '40 % - Accent1'
         c.font = Font(bold=True)
         for row in ws.iter_rows():
-            if row[0].value == 'Cisco Devices' or row[0] == 'Palo Alto Devices':
+            if row[0].value == 'Cisco Devices' or row[0].value == 'Palo Alto Devices':
                 row[0].style = '40 % - Accent2'
                 row[0].font = Font(bold=True)
                 row[1].style = '40 % - Accent2'
                 row[1].font = Font(bold=True)
+            elif row[0].value == 'Device Name':
+                pass
             elif row[0].value:
                 row[0].style = '20 % - Accent3'
-                row[1].style = '20 % - Accent3'
+                row[1].style = '20 % - Accent3;
+                
+        ws.page_setup.fit_width = True
                 
     except:
         pass
