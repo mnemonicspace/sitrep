@@ -128,7 +128,7 @@ class Cisco:
                 prompt = self.prompt
             
             connection.sendline(cmd)
-            connection.expect('>','#')
+            connection.expect(['>','#'])
             response = connection.before.decode()
             print('done')
             return response
