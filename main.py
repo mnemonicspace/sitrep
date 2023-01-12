@@ -126,7 +126,7 @@ def get_report(palo, cisco):
                 pass
             elif row[0].value:
                 row[0].style = '20 % - Accent3'
-                row[1].style = '20 % - Accent3;
+                row[1].style = '20 % - Accent3'
                 
         ws.page_setup.fit_width = True
                 
