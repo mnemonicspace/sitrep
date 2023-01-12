@@ -45,7 +45,7 @@ def main():
     cisco_data = {}
     try:
         for dev in cisco_list:
-           cisco_data[dev.name] = re.findall(r"\A[^,]?P (Active|Standby)", str(dev.send_cmd(cisco_command)))
+           cisco_data[dev.name] = re.findall(r"\A[^,]+?P (Active|Standby)", str(dev.send_cmd(cisco_command)))
     except Exception as e:
         logging.error(f"Invalid response from Cisco device: {e}")
         sys.exit()
