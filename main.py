@@ -91,14 +91,13 @@ def get_report(palo, cisco):
         ws = wb.active
         ws.title = "Sitrep"
         ws.append(['Device Name', 'State'])
+        ws.append(['Cisco']).font = Font(bold=True)
         c = ws['A1']
         c.style = '40 % - Accent1'
         c.font = Font(bold=True)
         c = ws['B1']
         c.style = '40 % - Accent1'
         c.font = Font(bold=True)
-        
-        
         
     except Exception as e:
         raise RuntimeError(f"Could not initialize workbook: {e}")
@@ -109,8 +108,9 @@ def get_report(palo, cisco):
             ws.append([name, state[0]])
     except Exception as e:
        raise RuntimeError(f"Could not add Cisco data to workbook: {e}")
-
+   
     try:
+        ws.append(['Palo Alto']).font = Font(bold=True)
         for name, state in palo.items():
             ws.append([name, state.title()])
     except Exception as e:
