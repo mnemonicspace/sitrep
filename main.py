@@ -92,11 +92,11 @@ def get_report(palo, cisco):
         ws.title = "Sitrep"
         ws.append(['Device Name', 'State'])
         c = ws['A1']
-        c.font = Font(bold=True)
         c.style = '40 % - Accent1'
+        c.font = Font(bold=True)
         c = ws['B1']
-        c.font = Font(bold=True)
         c.style = '40 % - Accent1'
+        c.font = Font(bold=True)
         
         
         
