@@ -138,7 +138,8 @@ def get_report(palo, cisco):
                 row[1].style = '20 % - Accent3'
                 row[1].border = thin_border
                 
-        ws.page_setup.fit_width = True
+        ws.column_dimensions['A'].width = 20
+        ws.column_dimensions['B'].width = 10
                 
     except:
         pass
