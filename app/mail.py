@@ -5,6 +5,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 import ssl
+import pathlib
 
 
 def send_mail(text, report=""):
@@ -51,8 +52,9 @@ def send_mail(text, report=""):
 def get_config():
     # read in config file
     config = configparser.ConfigParser()
+    path = pathlib.Path(__name__).parent.resolve()
     try:
-        config.read("config/mailconfig.ini")
+        config.read(f"{path}/config/mailconfig.ini")
     except:
         raise RuntimeError("Could not read mailconfig.ini")
 

@@ -1,14 +1,16 @@
 import configparser
 import app.cisco as cisco
 import app.palo as palo
+import pathlib
 
 
 # Function to compile instances of Palo class objects from config file
 def palo_compile():
     try:
+        path = pathlib.Path(__name__).parent.resolve()
         devices = []
         config = configparser.ConfigParser()
-        config.read('config/paloalto.ini')
+        config.read(f"{path}/config/paloalto.ini")
     except Exception as e:
         raise RuntimeError(f"Error reading file: {e}")
     
@@ -27,9 +29,10 @@ def palo_compile():
 # Function to compile Cisco class objects from config file
 def cisco_compile():
     try:
+        path = pathlib.Path(__name__).parent.resolve()
         devices = []
         config = configparser.ConfigParser()
-        config.read('config/cisco.ini')
+        config.read(f"{path}/config/cisco.ini")
     except Exception as e:
         raise RuntimeError(f"Error reading file: {e}")
     

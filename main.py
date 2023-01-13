@@ -8,13 +8,16 @@ import xml.etree.ElementTree as ET
 import os
 import logging
 import sys
+import pathlib
 
 
 def main():
     
+    path = pathlib.Path(__name__).parent.resolve()
+    
     # initiate log file
     timestamp = f"{datetime.now().month}-{datetime.now().day}-{datetime.now().year}_{datetime.now().hour}:{datetime.now().minute}"
-    logging.basicConfig(filename=f"logs/{timestamp}.log", level=logging.INFO)
+    logging.basicConfig(filename=f"{path}/logs/{timestamp}.log", level=logging.INFO)
     
     # create devices, log errors to log file
     try:
@@ -147,7 +150,8 @@ def get_report(palo, cisco):
 
     # save the excel sheet with todays date to the /reports directory
     try:
-        report = f"{os.getcwd()}/reports/{str(date.today())}-sitrep.xlsx"
+        path = pathlib.Path(__name__).parent.resolve()
+        report = f"{path}/reports/{str(date.today())}-sitrep.xlsx"
         wb.save(report)
     except Exception as e:
        raise RuntimeError(f"Could not save workbook: {e}")
@@ -166,10 +170,11 @@ def compare(palo, cisco):
 
     # try to open the report from the previous day
     try:
-        wb = load_workbook(f"reports/{str(yesterday)}-sitrep.xlsx")
+        path = pathlib.Path(__name__).parent.resolve()
+        wb = load_workbook(f"{path}/reports/{str(yesterday)}-sitrep.xlsx")
         ws = wb["Sitrep"]
     except Exception as e:
-        logging.error("Could not open previous report: {e}") 
+        logging.error(f"Could not open previous report: {e}") 
         return ["Yesterday\'s sitrep not detected, see log file for details"]
 
     # compare each device state to the previous day's state
