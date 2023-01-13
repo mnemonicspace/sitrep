@@ -7,7 +7,7 @@ import pathlib
 # Function to compile instances of Palo class objects from config file
 def palo_compile():
     try:
-        path = pathlib.Path(__name__).parent.resolve()
+        path = pathlib.Path(__file__).parent.resolve()
         devices = []
         config = configparser.ConfigParser()
         config.read(f"{path}/config/paloalto.ini")
@@ -29,7 +29,7 @@ def palo_compile():
 # Function to compile Cisco class objects from config file
 def cisco_compile():
     try:
-        path = pathlib.Path(__name__).parent.resolve()
+        path = pathlib.Path(__file__).parent.resolve()
         devices = []
         config = configparser.ConfigParser()
         config.read(f"{path}/config/cisco.ini")

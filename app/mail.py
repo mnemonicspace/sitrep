@@ -52,7 +52,7 @@ def send_mail(text, report=""):
 def get_config():
     # read in config file
     config = configparser.ConfigParser()
-    path = pathlib.Path(__name__).parent.resolve()
+    path = pathlib.Path(__file__).parent.resolve()
     try:
         config.read(f"{path}/config/mailconfig.ini")
     except:
