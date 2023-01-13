@@ -10,7 +10,7 @@ def palo_compile():
         path = pathlib.Path(__file__).parent.resolve()
         devices = []
         config = configparser.ConfigParser()
-        config.read(f"{path}/config/paloalto.ini")
+        config.read(f"{path}/../config/paloalto.ini")
     except Exception as e:
         raise RuntimeError(f"Error reading file: {e}")
     
@@ -32,7 +32,7 @@ def cisco_compile():
         path = pathlib.Path(__file__).parent.resolve()
         devices = []
         config = configparser.ConfigParser()
-        config.read(f"{path}/config/cisco.ini")
+        config.read(f"{path}/../config/cisco.ini")
     except Exception as e:
         raise RuntimeError(f"Error reading file: {e}")
     

@@ -54,7 +54,7 @@ def get_config():
     config = configparser.ConfigParser()
     path = pathlib.Path(__file__).parent.resolve()
     try:
-        config.read(f"{path}/config/mailconfig.ini")
+        config.read(f"{path}/../config/mailconfig.ini")
     except:
         raise RuntimeError("Could not read mailconfig.ini")
 
