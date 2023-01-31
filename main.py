@@ -72,8 +72,7 @@ def main():
     if len(changed) == 0:
         text = "No devices have changed state from the previous day"
     else:
-        text = "The following devices have changed state:\n\n" + \
-            '\n'.join(changed)
+        text = "The following devices have changed state:\n\n" + ', '.join(changed)
     
     # log result to log file as well
     logging.info(text)
@@ -180,7 +179,7 @@ def compare(palo, cisco):
 
     # compare each device state to the previous day's state
     try:
-        for row in range(1, (len(palo)+len(cisco))):
+        for row in range(1, (len(palo)+len(cisco)+2)):
             dev = ws[f"A{row}"].value
             old_state = ws[f"B{row}"].value
             if dev is None or old_state is None:
