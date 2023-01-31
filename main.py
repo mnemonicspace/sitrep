@@ -38,21 +38,22 @@ def main():
 
     # run commands on devices and create dict of responses
     palo_data = {}
-    try:
-        for dev in palo_list:
+    for dev in palo_list:
+        try:
             palo_data[dev.name] = ET.fromstring(dev.send_xpath(palo_xpath).content).find(
             'result').find('group').find('local-info').find('state').text
-    except Exception as e:
-        logging.error(f"Invalid response from Palo Alto device: {e}")
-        sys.exit()
+        except Exception as e:
+            logging.error(f"Invalid response from Palo Alto device {dev.name}: {e}")
+            palo_data[dev.name] = "Invalid Response"
     
     cisco_data = {}
-    try:
-        for dev in cisco_list:
-           cisco_data[dev.name] = re.findall(r"\A[^,]+?P (Active|Standby)", str(dev.send_cmd(cisco_command)))
-    except Exception as e:
-        logging.error(f"Invalid response from Cisco device: {e}")
-        sys.exit()
+    for dev in cisco_list:
+        try:
+            cisco_data[dev.name] = re.findall(r"\A[^,]+?P (Active|Standby)", str(dev.send_cmd(cisco_command)))
+        except Exception as e:
+            logging.error(f"Invalid response from Cisco device {dev.name}: {e}")
+            cisco_data[dev.name] = "Invalid Response"
+
 
     # user responses to create spreadsheet report
     try:
