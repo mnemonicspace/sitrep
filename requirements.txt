@@ -24,7 +24,7 @@ ptyprocess==0.7.0
     # via pexpect
 pytz==2022.7
     # via datetime
-requests==2.28.1
+requests==2.31.0
     # via -r requirements.in
 urllib3==1.26.13
     # via requests
