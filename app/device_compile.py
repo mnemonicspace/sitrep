@@ -1,6 +1,7 @@
 import configparser
 import app.cisco as cisco
 import app.palo as palo
+import app.fortigate as fortigate
 import pathlib
 
 
@@ -59,4 +60,28 @@ def cisco_compile():
     except Exception as e:
         raise RuntimeError(f"Error creating devices: {e}")
         
+    return devices
+
+
+def fortigate_compile():
+    try:
+        path = pathlib.Path(__file__).parent.resolve()
+        devices = []
+        config = configparser.ConfigParser()
+        config.read(f"{path}/../config/fortigate.ini")
+    except Exception as e:
+        raise RuntimeError(f"Error reading file: {e}")
+    
+    try:
+        for section in config.sections():
+            devices.append(fortigate.Fortigate(
+                config[section]['name'],
+                config[section]['api'],
+                config[section]['ip'],
+                config[section]['primary'],
+                config[section]['secondary']
+                ))
+    except Exception as e:
+        raise RuntimeError(f"Error creating devices: {e}")
+    
     return devices

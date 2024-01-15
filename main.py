@@ -1,4 +1,4 @@
-from app.device_compile import cisco_compile, palo_compile
+from app.device_compile import cisco_compile, palo_compile, fortigate_compile
 from app.mail import send_mail
 from datetime import date, timedelta, datetime
 from openpyxl import Workbook, load_workbook
@@ -30,6 +30,12 @@ def main():
         cisco_list = cisco_compile()
     except Exception as e:
         logging.error(f"Could not compile cisco.ini: {e}")
+        sys.exit()
+        
+    try:
+        fortigate_list = fortigate_compile()
+    except Exception as e:
+        logging.error(f"Could not compile fortigate.ini: {e}")
         sys.exit()
 
     # set command to send to cisco devices
