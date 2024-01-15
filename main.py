@@ -59,18 +59,38 @@ def main():
         except Exception as e:
             logging.error(f"Invalid response from Cisco device {dev.name}: {e}")
             cisco_data[dev.name] = "Invalid Response"
+            
+            
+    fortigate_data = {}
+    for dev in fortigate_list:
+        try:
+            active = dev.get_hostname()
+            if dev.primary == active:
+                fortigate_data[dev.primary] = "Active"
+                fortigate_data[dev.secondary] = "Passive"
+            elif dev.secondary == active:
+                fortigate_data[dev.primary] = "Passive"
+                fortigate_data[dev.secondary] = "Active"
+            else:
+                fortigate_data[dev.primary] = "Invalid Response"
+                fortigate_data[dev.secondary] = "Invalid Response"
+        except Exception as e:
+            logging.error(f"Invalid response from Fortigate device {dev.name}: {e}")
+            fortigate_data[dev.primary] = "Invalid Response"
+            fortigate_data[dev.secondary] = "Invalid Response"
+                
 
 
     # user responses to create spreadsheet report
     try:
-        report = get_report(palo_data, cisco_data)
+        report = get_report(palo_data, cisco_data, fortigate_data)
     except Exception as e:
         logging.error(f"Could not generate report: {e}")
         sys.exit()
     
     # compare results to previous day to see if anything changed
     try:
-        changed = compare(palo_data, cisco_data)
+        changed = compare(palo_data, cisco_data, fortigate_data)
     except Exception as e:
         logging.error(f"Could not compare today's data to historical data: {e}")
         
@@ -93,7 +113,7 @@ def main():
     logging.info(f"Completed running at {datetime.now()}")
 
 
-def get_report(palo, cisco):
+def get_report(palo, cisco, fortigate):
     # open new excel sheet and add headers
     try:
         wb = Workbook()
@@ -116,7 +136,14 @@ def get_report(palo, cisco):
         for name, state in palo.items():
             ws.append([name, state.title()])
     except Exception as e:
-       raise RuntimeError(f"Could not add Palo Alto data to workbook: {e}") 
+       raise RuntimeError(f"Could not add Palo Alto data to workbook: {e}")
+   
+    try:
+        ws.append(['Fortigate Devices'])
+        for name, state in fortigate.items():
+            ws.append([name, state.title()])
+    except Exception as e:
+       raise RuntimeError(f"Could not add Fortigate data to workbook: {e}")
    
     try:
         thin_border = Border(left=Side(style='thin'), 
@@ -132,7 +159,7 @@ def get_report(palo, cisco):
         c.font = Font(bold=True)
         c.border = thin_border
         for row in ws.iter_rows():
-            if row[0].value == 'Cisco Devices' or row[0].value == 'Palo Alto Devices':
+            if row[0].value == 'Cisco Devices' or row[0].value == 'Palo Alto Devices' or row[0].value == 'Fortigate Devices':
                 row[0].style = '40 % - Accent2'
                 row[0].font = Font(bold=True)
                 row[0].border = thin_border
@@ -166,7 +193,7 @@ def get_report(palo, cisco):
     return report
 
 
-def compare(palo, cisco):
+def compare(palo, cisco, fortigate):
     # get yesterday's date
     today = date.today()
     yesterday = today - timedelta(days=1)
@@ -185,7 +212,7 @@ def compare(palo, cisco):
 
     # compare each device state to the previous day's state
     try:
-        for row in range(1, (len(palo)+len(cisco)+2)):
+        for row in range(1, (len(palo)+len(cisco)+len(fortigate)+2)):
             dev = ws[f"A{row}"].value
             old_state = ws[f"B{row}"].value
             if dev is None or old_state is None:
@@ -194,6 +221,8 @@ def compare(palo, cisco):
                 state = cisco[dev][0]
             elif dev in palo:
                 state = palo[dev]
+            elif dev in fortigate:
+                state = fortigate[dev]
             else:
                 continue
             if state.lower() != old_state.lower():

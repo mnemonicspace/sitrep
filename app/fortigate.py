@@ -72,7 +72,7 @@ class Fortigate:
         return self._primary
     
     @primary.setter
-    def name(self, primary):
+    def primary(self, primary):
         if not primary:
             raise ValueError("No primary name provided")
         self._primary = primary
@@ -81,7 +81,7 @@ class Fortigate:
     def secondary(self):
         return self._secondary
     
-    @name.setter
+    @secondary.setter
     def secondary(self, secondary):
         if not secondary:
             raise ValueError("No secondary name provided")
