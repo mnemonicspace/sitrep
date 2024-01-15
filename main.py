@@ -17,7 +17,7 @@ def main():
     
     # initiate log file
     timestamp = f"{datetime.now().month}-{datetime.now().day}-{datetime.now().year}_{datetime.now().hour}:{datetime.now().minute}"
-    logging.basicConfig(filename=f"{path}/logs/{timestamp}.log", level=logging.INFO, force=True)
+    logging.basicConfig(filename=f"{path}/logs/{timestamp}.log", level=logging.INFO)
     
     # create devices, log errors to log file
     try:
