@@ -212,7 +212,7 @@ def compare(palo, cisco, fortigate):
 
     # compare each device state to the previous day's state
     try:
-        for row in range(1, (len(palo)+len(cisco)+len(fortigate)+3)):
+        for row in range(1, (len(palo)+len(cisco)+len(fortigate)+len(fortigate)+3)):
             dev = ws[f"A{row}"].value
             old_state = ws[f"B{row}"].value
             if dev is None or old_state is None:
